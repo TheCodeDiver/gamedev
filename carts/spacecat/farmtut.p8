@@ -20,6 +20,7 @@ function _draw()
 	print(flr(clock),89,122,10)
 	print(day,104,122,10)
 	print(carrots,40,122,10)
+	print(flr(plr.bat,92,102,10))
 	dtrans()
 end
 
@@ -29,12 +30,17 @@ end
 function iplr()
 	plr={
 		x=63,
-		y=63
+		y=63,
+		bat=100
 	}
 end
 
 
 function uplr()
+
+	if btn(⬆️⬇️⬅️➡️) then
+		drain("mv")
+	end
 
 	if btn(➡️) then
 		plr.x+=1
@@ -67,18 +73,30 @@ function uactions()
 	if btnp(❎) then
 		local sp=mget(tile.x,tile.y)
 		
+		--plant seeds
 		if fget(sp,0) then
+			
 			mset(tile.x,tile.y,33)
+			drain("act")
+			
+		--water tile
 		elseif fget(sp,1) then
 			mset(tile.x,tile.y,sp+16)
+			drain("act")
+			
+		--harvest carrot	
 		elseif fget(sp,3) then
 			mset(tile.x,tile.y,52)
 			harvest()
+			drain("act")
+			
+		--day progression
 		elseif fget(sp,4) then
 			day+=1
 			clock=24
 			trans()
 			grow()
+			plr.bat=100
 		end
 	
 	end
@@ -135,6 +153,17 @@ end
 function harvest()
 	carrots+=1
 end
+-->8
+--battery--
+
+function drain(amt)
+	if amt=="mv" then
+		plr.bat-=.01
+	elseif amt=="act" then
+		plr.bat-=.1
+	end
+end
+
 __gfx__
 00000000bbbbbbbbbbbbbbbbbbbbbbbb0aaaaaa00000000000000000000000000000000000000000000666000000000099999999999999998888888888888888
 00000000bbbbbbbbbbbbbb3bbbb3bbbbaa0000aa0000000000000000000000000000000000000000006667600000000099999999999999998888888888888888
